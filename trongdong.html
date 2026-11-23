@@ -1,0 +1,600 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Trang của mình</title>
+  <style>
+    html { scroll-behavior: smooth; }
+
+    body {
+      margin: 0;
+      min-height: 100vh;
+      overflow-x: hidden;
+      background: #140505;
+      color: #fff;
+      font-family: "Segoe UI", Arial, sans-serif;
+      animation: vaoTrang 0.8s ease;
+    }
+
+    @keyframes vaoTrang {
+      from { opacity: 0; }
+      to   { opacity: 1; }
+    }
+
+    /* ===== Nền chủ đề lịch sử Việt Nam ===== */
+
+    /* Lớp màu: đỏ thẫm, ánh vàng như ánh đèn dầu trên giấy cổ */
+    .nen {
+      position: fixed;
+      inset: 0;
+      background:
+        radial-gradient(ellipse at 50% 36%, rgba(224, 150, 50, 0.30), transparent 55%),
+        radial-gradient(ellipse at 12% 88%, rgba(170, 28, 22, 0.45), transparent 55%),
+        radial-gradient(ellipse at 88% 12%, rgba(130, 34, 12, 0.40), transparent 50%),
+        linear-gradient(#210909, #0d0303);
+    }
+
+    /* Mặt trống đồng Đông Sơn, mờ và xoay rất chậm */
+    .trong {
+      position: fixed;
+      left: 50%;
+      top: 44%;
+      width: min(125vmin, 1020px);
+      aspect-ratio: 1;
+      transform: translate(-50%, -50%);
+      color: #e8b84a;
+      opacity: 0.2;
+      pointer-events: none;
+      -webkit-mask-image: radial-gradient(circle, #000 58%, transparent 74%);
+      mask-image: radial-gradient(circle, #000 58%, transparent 74%);
+    }
+
+    .trong svg {
+      width: 100%;
+      height: 100%;
+      animation: quayTrong 240s linear infinite;
+    }
+
+    @keyframes quayTrong {
+      to { transform: rotate(360deg); }
+    }
+
+    /* Núi non phía xa ở cuối màn hình */
+    .nui {
+      position: fixed;
+      left: 0;
+      bottom: 0;
+      width: 100%;
+      height: 26vh;
+      pointer-events: none;
+    }
+
+    /* Đốm sáng vàng bay lên */
+    #dom-dom {
+      position: fixed;
+      inset: 0;
+      pointer-events: none;
+    }
+
+    main {
+      position: relative;
+      z-index: 1;
+    }
+
+    /* ===== Phần chào đầu trang ===== */
+    .chao {
+      min-height: 64vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      padding: 40px 20px 10px;
+      box-sizing: border-box;
+    }
+
+    #loi-chao {
+      margin: 0;
+      font-size: clamp(2.4rem, 9vw, 4.6rem);
+      font-weight: 700;
+      letter-spacing: 1px;
+      color: #ffeab0;
+      text-shadow: 0 0 12px #e8a33a, 0 0 34px #c9582a, 0 0 70px #b3261e;
+    }
+
+    #chu-da-go {
+      border-right: 3px solid #ffeab0;   /* con trỏ nhấp nháy */
+      animation: nhay 0.8s infinite;
+    }
+
+    #chu-chua-go { visibility: hidden; }   /* chữ chưa gõ: ẩn nhưng vẫn giữ chỗ */
+
+    @keyframes nhay {
+      50% { border-color: transparent; }
+    }
+
+    /* Các dòng hiện dần sau khi gõ xong */
+    .hien-dan {
+      opacity: 0;
+      transform: translateY(14px);
+      transition: opacity 0.8s ease, transform 0.8s ease;
+    }
+
+    .hien-dan.hien {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    .phu {
+      margin: 18px 0 0;
+      font-size: clamp(1.05rem, 3.2vw, 1.4rem);
+      color: rgba(255, 238, 205, 0.88);
+      max-width: 620px;
+      line-height: 1.5;
+      text-shadow: 0 2px 12px rgba(0, 0, 0, 0.6);
+    }
+
+    .xuong {
+      margin-top: 34px;
+      color: rgba(255, 222, 150, 0.8);
+      text-decoration: none;
+      font-size: 0.95rem;
+    }
+
+    .xuong span {
+      display: block;
+      font-size: 1.4rem;
+      animation: nhun 1.6s ease-in-out infinite;
+    }
+
+    .xuong:hover { color: #fff; }
+
+    @keyframes nhun {
+      0%, 100% { transform: translateY(0); }
+      50%      { transform: translateY(7px); }
+    }
+
+    /* ===== Các mục ===== */
+    .muc {
+      max-width: 980px;
+      margin: 0 auto;
+      padding: 50px 20px 90px;
+    }
+
+    .muc > h2 {
+      margin: 0 0 22px;
+      font-size: 1.5rem;
+      font-weight: 600;
+      color: #ffeab0;
+      display: flex;
+      align-items: center;
+      gap: 14px;
+    }
+
+    .muc > h2::after {
+      content: "";
+      flex: 1;
+      height: 1px;
+      background: linear-gradient(90deg, rgba(232, 184, 74, 0.6), transparent);
+    }
+
+    .luoi {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+      gap: 20px;
+    }
+
+    .the {
+      position: relative;
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+      padding: 20px;
+      border-radius: 18px;
+      color: #fff;
+      text-decoration: none;
+      background: rgba(38, 10, 10, 0.68);
+      border: 1px solid rgba(232, 184, 74, 0.3);
+      backdrop-filter: blur(8px);
+      -webkit-backdrop-filter: blur(8px);
+      box-shadow: 0 8px 30px rgba(0, 0, 0, 0.45);
+      cursor: pointer;
+      opacity: 0;
+      animation: hienLen 0.7s ease forwards;
+      transition: transform 0.35s cubic-bezier(0.22, 0.9, 0.3, 1),
+                  border-color 0.3s ease,
+                  box-shadow 0.35s ease;
+    }
+
+    .the:nth-child(1) { animation-delay: 0.2s; }
+    .the:nth-child(2) { animation-delay: 0.35s; }
+
+    @keyframes hienLen {
+      from { opacity: 0; transform: translateY(26px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+
+    .the:hover,
+    .the:focus-visible {
+      transform: translateY(-6px);
+      border-color: rgba(255, 210, 110, 0.9);
+      box-shadow: 0 14px 40px rgba(220, 140, 40, 0.35);
+      outline: none;
+    }
+
+    /* Thẻ đang được mở: phóng to nhẹ và sáng lên */
+    .the.dang-mo {
+      transform: scale(1.08);
+      border-color: #fff;
+      box-shadow: 0 0 60px rgba(255, 200, 110, 0.7);
+      transition-duration: 0.5s;
+    }
+
+    .the h3 {
+      margin: 6px 0 0;
+      font-size: 1.3rem;
+      color: #ffeab0;
+    }
+
+    .the p {
+      margin: 0;
+      font-size: 0.92rem;
+      line-height: 1.5;
+      color: rgba(255, 240, 215, 0.8);
+      flex: 1;
+    }
+
+    .the .xem {
+      margin-top: 6px;
+      font-size: 0.9rem;
+      color: #f0c561;
+      transition: transform 0.3s ease;
+    }
+
+    .the:hover .xem { transform: translateX(6px); }
+
+    /* Mục dự phòng cho các mục sau này */
+    .sap-co {
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      min-height: 200px;
+      border-style: dashed;
+      background: rgba(38, 10, 10, 0.3);
+      color: rgba(255, 230, 190, 0.5);
+      cursor: default;
+      box-shadow: none;
+    }
+
+    .sap-co:hover {
+      transform: none;
+      border-color: rgba(232, 184, 74, 0.3);
+      box-shadow: none;
+    }
+
+    .sap-co b { font-size: 2rem; font-weight: 300; }
+
+    /* Hình hệ Mặt Trời thu nhỏ trên thẻ Vũ trụ */
+    .hinh {
+      position: relative;
+      width: 130px;
+      height: 130px;
+      margin: 4px auto 2px;
+      flex: none;
+    }
+
+    .hinh .mt {
+      position: absolute;
+      left: 50%;
+      top: 50%;
+      width: 20px;
+      height: 20px;
+      margin: -10px 0 0 -10px;
+      border-radius: 50%;
+      background: radial-gradient(circle at 35% 35%, #fff7c2, #ffc844 50%, #ff8a00);
+      box-shadow: 0 0 18px 6px rgba(255, 170, 40, 0.55);
+    }
+
+    .hinh .qd {
+      position: absolute;
+      left: 50%;
+      top: 50%;
+      border: 1px solid rgba(255, 255, 255, 0.16);
+      border-radius: 50%;
+      animation: quay linear infinite;
+    }
+
+    .hinh .qd::after {
+      content: "";
+      position: absolute;
+      top: -4px;
+      left: 50%;
+      width: 8px;
+      height: 8px;
+      margin-left: -4px;
+      border-radius: 50%;
+      background: var(--mau);
+      box-shadow: 0 0 8px var(--mau);
+    }
+
+    .hinh .q1 { width: 56px;  height: 56px;  margin: -28px 0 0 -28px; --mau: #ff9b6a; animation-duration: 5s; }
+    .hinh .q2 { width: 92px;  height: 92px;  margin: -46px 0 0 -46px; --mau: #7fc4ff; animation-duration: 9s; }
+    .hinh .q3 { width: 128px; height: 128px; margin: -64px 0 0 -64px; --mau: #f7e3a6; animation-duration: 15s; }
+
+    @keyframes quay {
+      to { transform: rotate(360deg); }
+    }
+
+    footer {
+      position: relative;
+      z-index: 1;
+      text-align: center;
+      padding: 0 20px 28px;
+      color: rgba(255, 230, 190, 0.45);
+      font-size: 0.8rem;
+    }
+
+    /* ===== Hiệu ứng mở mục: vòng tròn loang ra từ chỗ bấm =====
+       Màu của vòng tròn là màu vũ trụ, vì mục đang mở là trang Vũ trụ */
+    #mo-rong {
+      position: fixed;
+      inset: 0;
+      z-index: 50;
+      pointer-events: none;
+      background:
+        radial-gradient(ellipse at 20% 30%, rgba(120, 60, 200, 0.35), transparent 50%),
+        radial-gradient(ellipse at 80% 70%, rgba(30, 100, 220, 0.30), transparent 55%),
+        radial-gradient(ellipse at center, #0a0f2c 0%, #02030a 80%);
+      clip-path: circle(0px at var(--x, 50%) var(--y, 50%));
+      transition: clip-path 0.8s cubic-bezier(0.65, 0, 0.35, 1);
+    }
+
+    #mo-rong.mo {
+      pointer-events: auto;
+      clip-path: circle(150vmax at var(--x, 50%) var(--y, 50%));
+    }
+
+    /* Các phần còn lại mờ dần khi đang mở */
+    body.roi .chao,
+    body.roi .muc > h2,
+    body.roi .the:not(.dang-mo),
+    body.roi footer {
+      opacity: 0;
+      transition: opacity 0.5s ease;
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      *, *::before, *::after {
+        animation: none !important;
+        transition-duration: 0.01s !important;
+      }
+      .the, .hien-dan { opacity: 1 !important; transform: none !important; }
+    }
+  </style>
+</head>
+<body>
+  <div class="nen"></div>
+  <div class="trong" id="trong-dong" aria-hidden="true"></div>
+
+  <!-- Núi non phía xa -->
+  <svg class="nui" viewBox="0 0 1440 220" preserveAspectRatio="none" aria-hidden="true">
+    <path d="M0 220 L0 140 L120 92 L230 130 L360 72 L500 126 L620 96 L760 140 L900 80 L1040 130 L1180 92 L1300 126 L1440 100 L1440 220 Z"
+          fill="rgba(150, 30, 22, 0.35)"/>
+    <path d="M0 220 L0 172 Q120 122 240 162 Q360 192 480 152 Q620 108 760 162 Q880 196 1000 156 Q1140 112 1280 162 Q1370 186 1440 166 L1440 220 Z"
+          fill="rgba(60, 8, 8, 0.78)"/>
+  </svg>
+
+  <canvas id="dom-dom"></canvas>
+
+  <main>
+    <header class="chao">
+      <h1 id="loi-chao"><span id="chu-da-go"></span><span id="chu-chua-go"></span></h1>
+      <p class="phu hien-dan" id="cau-phu">Chào mừng bạn đã đến với trang web của mình</p>
+      <a class="xuong hien-dan" id="nut-xuong" href="#muc">Khám phá các mục<span>&darr;</span></a>
+    </header>
+
+    <section class="muc" id="muc">
+      <h2>Các mục</h2>
+      <div class="luoi">
+
+        <a class="the" id="the-vutru" href="vutru.html">
+          <div class="hinh" aria-hidden="true">
+            <div class="qd q3"></div>
+            <div class="qd q2"></div>
+            <div class="qd q1"></div>
+            <div class="mt"></div>
+          </div>
+          <h3>Vũ trụ</h3>
+          <p>Hệ Mặt Trời với 8 hành tinh tự quay. Kéo để xoay tùy ý, chạm vào hành tinh để xem thông tin.</p>
+          <span class="xem">Khám phá &rarr;</span>
+        </a>
+
+        <!-- Mục mới sẽ thêm ở đây: copy nguyên khối <a class="the"> ở trên rồi sửa nội dung -->
+        <div class="the sap-co" aria-disabled="true">
+          <b>+</b>
+          <span>Sắp có thêm mục mới</span>
+        </div>
+
+      </div>
+    </section>
+  </main>
+
+  <footer>Trang web của mình</footer>
+
+  <div id="mo-rong"></div>
+
+  <script>
+    // ===== Lời chào gõ chữ =====
+    // Đổi câu chào ở đây
+    const cauChao = "Xin Chào Bạn";
+    // Tốc độ gõ (mili giây cho mỗi chữ), số càng nhỏ gõ càng nhanh
+    const tocDo = 110;
+
+    const daGo = document.getElementById("chu-da-go");
+    const chuaGo = document.getElementById("chu-chua-go");
+    let i = 0;
+
+    // Phần chữ chưa gõ vẫn được đặt sẵn nhưng ẩn đi, để dòng chữ không bị nhảy vị trí khi gõ
+    chuaGo.textContent = cauChao;
+
+    function go() {
+      if (i < cauChao.length) {
+        i++;
+        daGo.textContent = cauChao.slice(0, i);
+        chuaGo.textContent = cauChao.slice(i);
+        setTimeout(go, tocDo);
+      } else {
+        // Gõ xong: hiện dần dòng phụ và nút kéo xuống
+        document.getElementById("cau-phu").classList.add("hien");
+        setTimeout(() => document.getElementById("nut-xuong").classList.add("hien"), 350);
+      }
+    }
+    window.addEventListener("load", () => setTimeout(go, 400));
+
+    // ===== Vẽ mặt trống đồng Đông Sơn (SVG tạo bằng code) =====
+    function veTrongDong() {
+      const C = 300;   // tâm của hình 600 x 600
+      const diem = (r, a) => (C + r * Math.cos(a)).toFixed(1) + " " + (C + r * Math.sin(a)).toFixed(1);
+      const vong = (r, w) =>
+        '<circle cx="' + C + '" cy="' + C + '" r="' + r + '" fill="none" stroke="currentColor" stroke-width="' + (w || 2) + '"/>';
+
+      // Dải răng cưa (hình tam giác nối tiếp nhau) giữa hai bán kính
+      const rangCua = (rTrong, rNgoai, so) => {
+        let d = "";
+        for (let k = 0; k < so * 2; k++) {
+          const r = k % 2 === 0 ? rTrong : rNgoai;
+          d += (k ? "L" : "M") + diem(r, (Math.PI * 2 * k) / (so * 2));
+        }
+        return '<path d="' + d + 'Z" fill="none" stroke="currentColor" stroke-width="2"/>';
+      };
+
+      let s = '<svg viewBox="0 0 600 600" xmlns="http://www.w3.org/2000/svg">';
+
+      // Các vành tròn đồng tâm
+      [292, 284, 240, 234, 188, 182, 138, 132, 100, 94].forEach(r => { s += vong(r, r === 292 ? 3 : 2); });
+
+      // Ngôi sao 14 cánh ở giữa mặt trống
+      let sao = "";
+      for (let k = 0; k < 28; k++) {
+        sao += (k ? "L" : "M") + diem(k % 2 === 0 ? 90 : 46, (Math.PI * 2 * k) / 28 - Math.PI / 2);
+      }
+      s += '<path d="' + sao + 'Z" fill="currentColor" fill-opacity="0.35" stroke="currentColor" stroke-width="2"/>';
+      s += vong(22) + vong(12);
+
+      // Hai dải răng cưa
+      s += rangCua(104, 130, 28);
+      s += rangCua(244, 282, 48);
+
+      // Vành chim Lạc bay (cách điệu), 14 con bay cùng chiều
+      const chim = "M-18 2 Q-4 -2 12 0 L20 -3 M12 0 L18 3 M-18 2 L-26 -4 M-18 2 L-26 8 M-6 0 Q-2 -14 10 -16 M-6 1 Q0 10 8 12";
+      for (let k = 0; k < 14; k++) {
+        const a = (Math.PI * 2 * k) / 14;
+        const x = C + 160 * Math.cos(a), y = C + 160 * Math.sin(a);
+        const goc = (a * 180) / Math.PI + 90;
+        s += '<path d="' + chim + '" transform="translate(' + x.toFixed(1) + " " + y.toFixed(1) + ") rotate(" + goc.toFixed(1) +
+             ')" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"/>';
+      }
+
+      // Vành chấm tròn có tâm
+      for (let k = 0; k < 40; k++) {
+        const a = (Math.PI * 2 * k) / 40;
+        const x = C + 211 * Math.cos(a), y = C + 211 * Math.sin(a);
+        s += '<circle cx="' + x.toFixed(1) + '" cy="' + y.toFixed(1) + '" r="5" fill="none" stroke="currentColor" stroke-width="1.6"/>' +
+             '<circle cx="' + x.toFixed(1) + '" cy="' + y.toFixed(1) + '" r="1.6" fill="currentColor"/>';
+      }
+
+      // Vành ngoài cùng: những vạch ngắn nhỏ
+      for (let k = 0; k < 120; k++) {
+        const a = (Math.PI * 2 * k) / 120;
+        s += '<path d="M' + diem(285.5, a) + " L" + diem(290.5, a) + '" stroke="currentColor" stroke-width="1.4"/>';
+      }
+
+      return s + "</svg>";
+    }
+    document.getElementById("trong-dong").innerHTML = veTrongDong();
+
+    // ===== Đốm sáng vàng bay lên =====
+    const canvas = document.getElementById("dom-dom");
+    const ctx = canvas.getContext("2d");
+    let w, h, domList = [];
+    const SO_DOM = 70;   // số đốm sáng
+
+    function resize() {
+      w = canvas.width = window.innerWidth;
+      h = canvas.height = window.innerHeight;
+      domList = Array.from({ length: SO_DOM }, () => ({
+        x: Math.random() * w,
+        y: Math.random() * h,
+        r: Math.random() * 1.6 + 0.5,
+        pha: Math.random() * Math.PI * 2,
+        nhay: Math.random() * 0.03 + 0.01,
+        bay: Math.random() * 0.35 + 0.1,        // tốc độ bay lên
+        lac: Math.random() * 0.4 + 0.1          // độ lắc ngang
+      }));
+    }
+    window.addEventListener("resize", resize);
+    resize();
+
+    function ve() {
+      ctx.clearRect(0, 0, w, h);
+      for (const d of domList) {
+        d.pha += d.nhay;
+        d.y -= d.bay;
+        d.x += Math.sin(d.pha) * d.lac;
+        if (d.y < -10) { d.y = h + 10; d.x = Math.random() * w; }
+        const sang = 0.5 + 0.5 * Math.sin(d.pha * 2);
+        ctx.beginPath();
+        ctx.arc(d.x, d.y, d.r, 0, Math.PI * 2);
+        ctx.fillStyle = "rgba(255, 205, 110," + (0.25 + 0.6 * sang) + ")";
+        ctx.shadowColor = "rgba(255, 170, 60, 0.9)";
+        ctx.shadowBlur = 8;
+        ctx.fill();
+      }
+      ctx.shadowBlur = 0;
+      requestAnimationFrame(ve);
+    }
+    ve();
+
+    // ===== Bấm vào mục: mở mượt rồi chuyển trang =====
+    const moRong = document.getElementById("mo-rong");
+    const THOI_GIAN_MO = 850;   // mili giây, khớp với hiệu ứng trong CSS
+
+    function moMuc(the, e) {
+      const r = the.getBoundingClientRect();
+      // Vòng tròn loang ra từ chỗ bấm (nếu bấm bằng bàn phím thì loang từ giữa thẻ)
+      const coToaDo = e.clientX || e.clientY;
+      const x = coToaDo ? e.clientX : r.left + r.width / 2;
+      const y = coToaDo ? e.clientY : r.top + r.height / 2;
+      moRong.style.setProperty("--x", x + "px");
+      moRong.style.setProperty("--y", y + "px");
+
+      the.classList.add("dang-mo");
+      document.body.classList.add("roi");
+      moRong.classList.add("mo");
+      setTimeout(() => { location.href = the.href; }, THOI_GIAN_MO);
+    }
+
+    document.querySelectorAll("a.the").forEach(the => {
+      the.addEventListener("click", (e) => {
+        if (e.ctrlKey || e.metaKey || e.shiftKey || e.altKey || e.button !== 0) return;   // mở tab mới thì để trình duyệt tự xử lý
+        e.preventDefault();
+        if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
+          location.href = the.href;
+          return;
+        }
+        moMuc(the, e);
+      });
+    });
+
+    // Quay lại từ trang vũ trụ bằng nút Back thì trả trang về trạng thái ban đầu
+    window.addEventListener("pageshow", (e) => {
+      if (e.persisted) {
+        moRong.classList.remove("mo");
+        document.body.classList.remove("roi");
+        document.querySelectorAll(".the.dang-mo").forEach(t => t.classList.remove("dang-mo"));
+      }
+    });
+  </script>
+</body>
+</html>
